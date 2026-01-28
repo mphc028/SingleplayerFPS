@@ -12,6 +12,10 @@ public class WeaponAnimationController : MonoBehaviour
 
     private float speed = 0f;
     private Animator animator;
+    [SerializeField] private AudioSource shootSound;
+    [SerializeField] private AudioSource reloadSound;
+    [SerializeField] private ParticleSystem bulletParticles;
+
     private WeaponState state;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -30,6 +34,7 @@ public class WeaponAnimationController : MonoBehaviour
     public void Reload()
     {
         animator.Play("Reload");
+        reloadSound.Play();
     }
 
     public void SetSpeed(float speed)
@@ -40,6 +45,8 @@ public class WeaponAnimationController : MonoBehaviour
     public void Shoot()
     {
         animator.Play("Shoot");
+        shootSound.Play();
+        bulletParticles.Emit(1);
     }
 
 

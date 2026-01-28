@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,6 +21,16 @@ public class ShootRaycastExample : MonoBehaviour
         {
             ShootRaycastFromCenter();
         }
+
+        if (Keyboard.current.rKey.wasPressedThisFrame)
+        {
+            Reload();
+        }
+    }
+
+    private void Reload()
+    {
+        weaponAnimationController.Reload();
     }
 
     void ShootRaycastFromCenter()
@@ -43,9 +54,11 @@ public class ShootRaycastExample : MonoBehaviour
             endPoint = ray.origin + ray.direction * maxDistance;
         }
 
+        /*
         // Draw in-game line
         lineRenderer.enabled = true;
         lineRenderer.SetPosition(0, ray.origin);
         lineRenderer.SetPosition(1, endPoint);
+        */
     }
 }
