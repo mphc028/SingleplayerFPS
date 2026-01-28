@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82a5f3f632cc7d44c8bdeef9cab77954, type: 3}
+  m_Name: SolidFootstep
+  m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 8300000, guid: e0e0a54afd65e30459abd93e92043405, type: 3}
+  - {fileID: 8300000, guid: 13f4307ca0bda8a4d9c0c95640ee736e, type: 3}
+  - {fileID: 8300000, guid: 9bac9ef3f46e9734391e93120b1636b8, type: 3}
+  - {fileID: 8300000, guid: c31ef97be95caeb4ca86ceb95fd7c122, type: 3}
+  - {fileID: 8300000, guid: bcdb1607c0ba1bf4d8972b1d68a1946b, type: 3}
+  - {fileID: 8300000, guid: f3b9bb89f60c21a4a8c9921d38b914ec, type: 3}
