@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 public class ShootRaycastExample : MonoBehaviour
 {
     private LineRenderer lineRenderer;
+    
+    [SerializeField] private WeaponAnimationController weaponAnimationController;
 
     void Awake()
     {
@@ -22,6 +24,8 @@ public class ShootRaycastExample : MonoBehaviour
 
     void ShootRaycastFromCenter()
     {
+        weaponAnimationController.Shoot();
+
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         RaycastHit hit;
 
