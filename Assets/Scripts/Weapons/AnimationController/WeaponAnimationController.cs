@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 enum WeaponState
@@ -15,6 +17,7 @@ public class WeaponAnimationController : MonoBehaviour
     [SerializeField] private AudioSource shootSound;
     [SerializeField] private AudioSource reloadSound;
     [SerializeField] private ParticleSystem bulletParticles;
+    [SerializeField] private GameObject muzzleFlash;
 
     private WeaponState state;
 
@@ -47,7 +50,16 @@ public class WeaponAnimationController : MonoBehaviour
         animator.Play("Shoot");
         shootSound.Play();
         bulletParticles.Emit(1);
+
+        StartCoroutine(HandleMuzzleFlash());
     }
 
+
+    IEnumerator HandleMuzzleFlash()
+    {
+        muzzleFlash.SetActive(true);
+        yield return new WaitForSeconds(.05f);
+        muzzleFlash.SetActive(false);
+    }
 
 }
