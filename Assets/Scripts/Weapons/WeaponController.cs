@@ -2,14 +2,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(LineRenderer))]
-public class ShootRaycastExample : MonoBehaviour
+public class WeaponController : MonoBehaviour
 {
     private LineRenderer lineRenderer;
 
     [SerializeField] private WeaponAnimationController weaponAnimationController;
 
     [Header("Particle Settings")]
-    [SerializeField] private ParticleSystem hitParticleSystem; // Assign in inspector
+    [SerializeField] private ParticleSystem hitParticleSystem;
+
+    private int ammo;
+    private int maxAmmo;
+    private int chargerSize;
 
     void Awake()
     {
