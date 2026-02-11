@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -45,10 +47,16 @@ public class PlayerController : MonoBehaviour
 
     Vector3 vel = Vector3.zero;
 
+    private int health = 100;
+
+    private float damageCooldown = 0;
+    private bool canBeDamaged = true;
+
     private void Awake()
     {
         Instance = this;
     }
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -100,6 +108,13 @@ public class PlayerController : MonoBehaviour
         JumpVoid();
         DownRaycast();
         CrouchVoid();
+
+        damageCooldown -= Time.deltaTime;
+        if (damageCooldown < 0)
+        {
+            canBeDamaged = true;
+            damageCooldown = 2;
+        }
     }
 
     private void JumpVoid()
@@ -187,5 +202,29 @@ public class PlayerController : MonoBehaviour
     {
         GUI.Label(new Rect(10, 10, 100, 20), "speed: "+rb.linearVelocity.magnitude);
         GUI.Label(new Rect(10, 60, 100, 20), "ground: "+groundType);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (!canBeDamaged) return;
+
+        if (other.gameObject.tag == "Enemy")
+        {
+            damageCooldown = 2f;
+            canBeDamaged = false;
+            Debug.Log("DAMAGE!");
+            Damage(25);
+        }
+    }
+
+    private void Damage(int amount)
+    {
+        health -= amount;
+        if (health <= 0) Die(); 
+    }
+
+    private void Die()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
