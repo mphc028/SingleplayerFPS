@@ -1,30 +1,30 @@
 using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 enum WeaponState
 {
-   Idle,
-   Shooting,
-   Reloading
+    Idle,
+    Shooting,
+    Reloading
 }
 
 public class WeaponAnimationController : MonoBehaviour
 {
-
-    private float speed = 0f;
     private Animator animator;
+
     [SerializeField] private AudioSource shootSound;
     [SerializeField] private AudioSource reloadSound;
     [SerializeField] private ParticleSystem bulletParticles;
     [SerializeField] private GameObject muzzleFlash;
+
     private WeaponController weaponController;
-
     private WeaponState state;
-
     private bool hasShot = false;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private float smoothedSpeed = 0f;
+    [SerializeField] private float speedSmoothing = 2f;
+
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -32,22 +32,9 @@ public class WeaponAnimationController : MonoBehaviour
         weaponController = GetComponentInParent<WeaponController>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-
-    }
-
-    public void Reload()
-    {
-        StartCoroutine(StartReloading());
-        animator.Play("Reload");
-        reloadSound.Play();
-    }
-
-    public void SetSpeed(float speed)
-    {
-        this.speed = speed;
+        SetSpeed(PlayerController.Instance.GetVelocity());
     }
 
     public void Shoot()
@@ -57,10 +44,26 @@ public class WeaponAnimationController : MonoBehaviour
         animator.Play("Shoot");
         shootSound.Play();
         bulletParticles.Emit(1);
-
         StartCoroutine(HandleMuzzleFlash());
     }
 
+    public void Reload()
+    {
+        StartCoroutine(StartReloading());
+        animator.Play("Reload");
+        reloadSound.Play();
+    }
+
+    public void Inspect()
+    {
+        animator.Play("Inspect");
+    }
+
+    public void SetSpeed(float speed)
+    {
+        smoothedSpeed = Mathf.Lerp(smoothedSpeed, speed, Time.deltaTime * speedSmoothing);
+        animator.SetFloat("speed", smoothedSpeed);
+    }
 
     IEnumerator HandleMuzzleFlash()
     {
@@ -74,9 +77,6 @@ public class WeaponAnimationController : MonoBehaviour
         hasShot = false;
         yield return new WaitForSeconds(1.2f);
         if (!hasShot)
-        {
             weaponController.RequestReload();
-        }
     }
-
 }

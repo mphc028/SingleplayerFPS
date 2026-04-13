@@ -227,4 +227,10 @@ public class PlayerController : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public float GetVelocity()
+    {
+        Debug.Log(rb.linearVelocity.magnitude);
+        return rb.linearVelocity.magnitude;
+    }
 }

@@ -15,14 +15,6 @@ public class WeaponController : MonoBehaviour
     [SerializeField] private int maxAmmo;
     [SerializeField] private int chargerSize;
 
-
-    /* 
-     * 
-     * Disparamos si tenemos balas (ammo)
-     * Podemos recargar y se nos rellena hasta charger size o maxAmmo (si es mas pequeño que chargersize)
-     * 
-     */
-
     void Awake()
     {
         lineRenderer = GetComponent<LineRenderer>();
@@ -39,19 +31,17 @@ public class WeaponController : MonoBehaviour
     void Update()
     {
         if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
             Shoot();
-        }
 
         if (Keyboard.current.rKey.wasPressedThisFrame)
-        {
             Reload();
-        }
+
+        if (Keyboard.current.fKey.wasPressedThisFrame)
+            Inspect();
     }
 
     void Shoot()
     {
-        // LE TENGO QUE RESTAR UNA BALA. SI NO TIENE BALAS, NO DISPARO.
         if (ammo > 0)
         {
             ammo--;
@@ -60,92 +50,47 @@ public class WeaponController : MonoBehaviour
         }
     }
 
-    private void Reload()
+    void Reload()
     {
         if (maxAmmo > 0 && ammo < chargerSize)
             weaponAnimationController.Reload();
+    }
+
+    void Inspect()
+    {
+        weaponAnimationController.Inspect();
     }
 
     void ShootRaycastFromCenter()
     {
         weaponAnimationController.Shoot();
 
-        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.5f)); // Fixed: use 0.5f for z
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0.5f));
         RaycastHit hit;
-
         float maxDistance = 100f;
 
-        Vector3 endPoint;
         Vector3 hitDirection = Vector3.zero;
 
         if (Physics.Raycast(ray, out hit, maxDistance))
         {
-            endPoint = hit.point;
-
-            // Calculate direction OPPOSITE to ray direction
-            // This is from hit point back towards the camera
             hitDirection = -ray.direction.normalized;
-
-            Debug.Log($"Hit: {hit.transform.name} | Ray Direction: {ray.direction} | Reverse Direction: {hitDirection}");
 
             if (hit.transform.CompareTag("Enemy"))
             {
-                // Create rotation that faces the opposite direction of the ray
                 Quaternion reverseRotation = Quaternion.LookRotation(hitDirection);
-
-                // Pass the reverse rotation to the TakeDamage method
                 EnemyController enemy = hit.transform.GetComponent<EnemyController>();
                 if (enemy != null)
-                {
                     enemy.TakeDamage(10, hit.point, reverseRotation);
-                }
             }
 
-            // Spawn hit particles at the impact point with reverse direction
             if (hitParticleSystem != null)
             {
-                // Position at hit point
                 hitParticleSystem.transform.position = hit.point;
-
-                // Make particles go opposite to ray direction (back toward shooter)
                 hitParticleSystem.transform.rotation = Quaternion.LookRotation(hitDirection);
-
-                // Play the particle system
                 hitParticleSystem.Play();
-
-                Debug.DrawRay(hit.point, hitDirection * 5f, Color.green, 2f); // Visualize reverse direction
             }
         }
-        else
-        {
-            endPoint = ray.origin + ray.direction * maxDistance;
-        }
-
-        // Visualize the ray for debugging
-        Debug.DrawRay(ray.origin, ray.direction * maxDistance, Color.red, 1f);
-
-        /*
-        // Draw in-game line
-        lineRenderer.enabled = true;
-        lineRenderer.SetPosition(0, ray.origin);
-        lineRenderer.SetPosition(1, endPoint);
-        */
     }
-
-    //public void RequestReload()
-    //{
-    //    int bulletsToRemove = 0;
-    //    if (maxAmmo < 
-    //        chargerSize)
-    //        bulletsToRemove = maxAmmo;
-    //    else
-    //        bulletsToRemove = chargerSize;
-
-    //    ammo += bulletsToRemove;
-    //    maxAmmo -= bulletsToRemove;
-    //    UIManager.Instance.SetAmmo(ammo);
-    //    UIManager.Instance.SetMaxAmmo(maxAmmo);
-    //}
 
     public void RequestReload()
     {
@@ -153,7 +98,6 @@ public class WeaponController : MonoBehaviour
             return;
 
         int spaceLeft = chargerSize - ammo;
-
         int bulletsToLoad = Mathf.Min(spaceLeft, maxAmmo);
 
         ammo += bulletsToLoad;
@@ -162,5 +106,4 @@ public class WeaponController : MonoBehaviour
         UIManager.Instance.SetAmmo(ammo);
         UIManager.Instance.SetMaxAmmo(maxAmmo);
     }
-
 }

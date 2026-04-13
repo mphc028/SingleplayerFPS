@@ -202,7 +202,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -339,15 +339,15 @@ ModelImporter:
       name: Hands|Run
       takeName: Hands|Run
       internalID: -2242841552312782077
-      firstFrame: 0
-      lastFrame: 167
+      firstFrame: 31
+      lastFrame: 128
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -397,15 +397,15 @@ ModelImporter:
       name: Hands|Walk
       takeName: Hands|Walk
       internalID: -6465172296577643380
-      firstFrame: 0
-      lastFrame: 282
+      firstFrame: 31
+      lastFrame: 128
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
